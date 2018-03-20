@@ -7,10 +7,15 @@ public class Puzzle implements ActionListener
 	private JButton[][] button = new JButton[3][4];
 	private int rowBlankTile = 0;
 	private int colBlankTile = 0;
+	private int indexBlankTile = 0;
+	private	JFrame f = new JFrame();
+
+	private int[] indexArray = new int [12];
+	
+	private Score scoreManager = new Score();
 	
 	public Puzzle(){
 	
-		JFrame f = new JFrame();
 		JPanel p = new JPanel();
 
 		int imageIndex = 0;
@@ -20,6 +25,7 @@ public class Puzzle implements ActionListener
 					button[i][j] = new JButton (im);
 					button[i][j].addActionListener(this);
 					p.add(button[i][j]);
+					indexArray[imageIndex] = imageIndex;
 					imageIndex++;
 				}
 		}
@@ -31,8 +37,10 @@ public class Puzzle implements ActionListener
 		f.setVisible(true);			
 		}
 
+//This block of code enables only adjacent tiles to be swapped with the blank tile, and does not permit th 
 		public void actionPerformed(ActionEvent e){
 			boolean foundButton = false;
+			int imageIndex = 0; 
 			for (int i = 0; i < 3; i++){
           			for (int j = 0; j < 4; j++){
       					boolean isAdjacent = ((rowBlankTile == i) && ((colBlankTile == j+1) || (colBlankTile == j-1))) ||
@@ -41,17 +49,31 @@ public class Puzzle implements ActionListener
 						Icon tempIcon = button[i][j].getIcon();
 						button[i][j].setIcon( button[rowBlankTile][colBlankTile].getIcon());
 						button[rowBlankTile][colBlankTile].setIcon(tempIcon);
+						indexArray[indexBlankTile] = indexArray[imageIndex];
+						indexArray[imageIndex] = 0;
 						rowBlankTile = i;
 						colBlankTile = j;
+						indexBlankTile = imageIndex;
+						scoreManager.addScore();
+						f.setTitle("Puzzle Score= " + scoreManager.getScore());
 						foundButton = true;
+						checkPuzzleCompleted();
 						break; 
 					}
+					imageIndex++;
 				}
 				if(foundButton)
 					break;
 				
 			}
 		}
-
+		
+		private void checkPuzzleCompleted (){
+			for (int i = 0; i < 12; i++){
+				if (indexArray[i] != i)
+					return;
+			}
+			System.out.println("GAGNEEEEE");
+}
 }
 
