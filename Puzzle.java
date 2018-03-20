@@ -1,9 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class Puzzle
+public class Puzzle implements ActionListener
 {
 	private JButton[][] button = new JButton[3][4];
+	private int rowBlankTile = 0;
+	private int colBlankTile = 0;
 	
 	public Puzzle(){
 	
@@ -15,6 +18,7 @@ public class Puzzle
           		for (int j = 0; j < 4; j++){	
 					ImageIcon im = new ImageIcon ("resources/Bart"+imageIndex+".jpg");
 					button[i][j] = new JButton (im);
+					button[i][j].addActionListener(this);
 					p.add(button[i][j]);
 					imageIndex++;
 				}
@@ -27,8 +31,27 @@ public class Puzzle
 		f.setVisible(true);			
 		}
 
-		public void actionPerformed(){
-	
+		public void actionPerformed(ActionEvent e){
+			boolean foundButton = false;
+			for (int i = 0; i < 3; i++){
+          			for (int j = 0; j < 4; j++){
+      					boolean isAdjacent = ((rowBlankTile == i) && ((colBlankTile == j+1) || (colBlankTile == j-1))) ||
+							(((rowBlankTile == i+1) || (rowBlankTile == i-1)) && (colBlankTile == j));
+					if (e.getSource() == button[i][j] && isAdjacent){
+						Icon tempIcon = button[i][j].getIcon();
+						button[i][j].setIcon( button[rowBlankTile][colBlankTile].getIcon());
+						button[rowBlankTile][colBlankTile].setIcon(tempIcon);
+						rowBlankTile = i;
+						colBlankTile = j;
+						foundButton = true;
+						break; 
+					}
+				}
+				if(foundButton)
+					break;
+				
+			}
 		}
 
 }
+
