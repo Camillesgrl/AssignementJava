@@ -73,7 +73,7 @@ public class Puzzle implements ActionListener
 				if (indexArray[i] != i)
 					return;
 			}
-			System.out.println("GAGNEEEEE");
+			scoreManager.show();
 }
 }
 
