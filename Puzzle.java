@@ -37,23 +37,23 @@ public class Puzzle implements ActionListener
 		f.setVisible(true);			
 		}
 
-//This block of code enables only adjacent tiles to be swapped with the blank tile, and does not permit th 
+
 		public void actionPerformed(ActionEvent e){
 			boolean foundButton = false;
 			int imageIndex = 0; 
 			for (int i = 0; i < 3; i++){
           			for (int j = 0; j < 4; j++){
       					boolean isAdjacent = ((rowBlankTile == i) && ((colBlankTile == j+1) || (colBlankTile == j-1))) ||
-							(((rowBlankTile == i+1) || (rowBlankTile == i-1)) && (colBlankTile == j));
+							(((rowBlankTile == i+1) || (rowBlankTile == i-1)) && (colBlankTile == j)); //Verifies thanks to the coordinates that the tile clicked are adjacent to the blank tile
 					if (e.getSource() == button[i][j] && isAdjacent){
-						Icon tempIcon = button[i][j].getIcon();
-						button[i][j].setIcon( button[rowBlankTile][colBlankTile].getIcon());
-						button[rowBlankTile][colBlankTile].setIcon(tempIcon);
-						indexArray[indexBlankTile] = indexArray[imageIndex];
-						indexArray[imageIndex] = 0;
+						Icon tempIcon = button[i][j].getIcon(); //A temporary icon is created to store the image of the tile clicked
+						button[i][j].setIcon( button[rowBlankTile][colBlankTile].getIcon()); //The tile clicked becomes associated with the blank tile
+						button[rowBlankTile][colBlankTile].setIcon(tempIcon); //The blank tile get the image stored in the temporary icon of the tile clicked
+						indexArray[indexBlankTile] = indexArray[imageIndex]; //The index of the blank tile becomes the one of the tile clicked
+						indexArray[imageIndex] = 0; //Since at the start of the game the index of the Blank tile is 0, the first tile clicked will get the index of 0
 						rowBlankTile = i;
 						colBlankTile = j;
-						indexBlankTile = imageIndex;
+						indexBlankTile = imageIndex; //The index of the blank tile gets the index of the tile swapped
 						scoreManager.addScore();
 						f.setTitle("Puzzle Score= " + scoreManager.getScore());
 						foundButton = true;
@@ -70,10 +70,10 @@ public class Puzzle implements ActionListener
 		
 		private void checkPuzzleCompleted (){
 			for (int i = 0; i < 12; i++){
-				if (indexArray[i] != i)
+				if (indexArray[i] != i) //if an index does not match the index where it should be, the puzzle is not completed yet. And the Game continues.
 					return;
 			}
 			scoreManager.show();
-}
+		}
 }
 

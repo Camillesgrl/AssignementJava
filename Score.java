@@ -18,12 +18,12 @@ public class Score implements ActionListener
 		a.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);//Close the scores window without closing the whole application
 		//initialise the labels with values
 		for(int i=0;i<5;i++){
-			scoreLabels[i][0] = new JLabel("Name"+(i+1));
+			scoreLabels[i][0] = new JLabel("Name"+(i+1)); 
 			panel.add(scoreLabels[i][0]);
 			scoreLabels[i][1] = new JLabel("0");
 			panel.add(scoreLabels[i][1]);
 		}
-		//adding the last row for inserting a new name
+		//adding the last row to insert a new name once the puzzle is completed
 		panel.add(new JLabel("Enter your name: "));
 		panel.add(newNameTextField);
 		newNameTextField.addActionListener(this);
@@ -42,7 +42,7 @@ public class Score implements ActionListener
 	public void show(){
 		a.setVisible(true); 
 	}
-	
+	//The name of the player must be more than one characther length to be valid and entered
 	public void actionPerformed(ActionEvent e){
 		if(newNameTextField.getText().length()>0){
 			displayNewScore();
